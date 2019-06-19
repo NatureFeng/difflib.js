@@ -219,8 +219,8 @@ class SequenceMatcher
     @setSeqs(a, b)
 
   setSeqs: (a, b) ->
-    ### 
-    Set the two sequences to be compared. 
+    ###
+    Set the two sequences to be compared.
 
     >>> s = new SequenceMatcher()
     >>> s.setSeqs('abcd', 'bcde')
@@ -231,8 +231,8 @@ class SequenceMatcher
     @setSeq2(b)
 
   setSeq1: (a) ->
-    ### 
-    Set the first sequence to be compared. 
+    ###
+    Set the first sequence to be compared.
 
     The second sequence to be compared is not changed.
 
@@ -257,7 +257,7 @@ class SequenceMatcher
 
   setSeq2: (b) ->
     ###
-    Set the second sequence to be compared. 
+    Set the second sequence to be compared.
 
     The first sequence to be compared is not changed.
 
@@ -343,8 +343,8 @@ class SequenceMatcher
     @isbpopular = (b) -> _has(popular, b)
 
   findLongestMatch: (alo, ahi, blo, bhi) ->
-    ### 
-    Find longest matching block in a[alo...ahi] and b[blo...bhi].  
+    ###
+    Find longest matching block in a[alo...ahi] and b[blo...bhi].
 
     If isjunk is not defined:
 
@@ -479,7 +479,7 @@ class SequenceMatcher
     matchingBlocks.sort(_arrayCmp)
 
     # It's possible that we have adjacent equal blocks in the
-    # matching_blocks list now. 
+    # matching_blocks list now.
     i1 = j1 = k1 = 0
     nonAdjacent = []
     for [i2, j2, k2] in matchingBlocks
@@ -503,7 +503,7 @@ class SequenceMatcher
     @matchingBlocks = nonAdjacent
 
   getOpcodes: ->
-    ### 
+    ###
     Return list of 5-tuples describing how to turn a into b.
 
     Each tuple is of the form [tag, i1, i2, j1, j2].  The first tuple
@@ -555,7 +555,7 @@ class SequenceMatcher
     answer
 
   getGroupedOpcodes: (n=3) ->
-    ### 
+    ###
     Isolate change clusters by eliminating ranges with no changes.
 
     Return a list groups with upto n lines of context.
@@ -621,7 +621,7 @@ class SequenceMatcher
     .getMatchingBlocks() or .getOpcodes(), in which case you may
     want to try .quickRatio() or .realQuickRatio() first to get an
     upper bound.
-    
+
     >>> s = new SequenceMatcher(null, 'abcd', 'bcde')
     >>> s.ratio()
     0.75
@@ -812,7 +812,7 @@ class Differ
       and return true iff the string is junk. The module-level function
       `IS_LINE_JUNK` may be used to filter out lines without visible
       characters, except for at most one splat ('#').  It is recommended
-      to leave linejunk null. 
+      to leave linejunk null.
 
     - `charjunk`: A function that should accept a string of length 1. The
       module-level function `IS_CHARACTER_JUNK` may be used to filter out
@@ -1048,7 +1048,7 @@ class Differ
 IS_LINE_JUNK = (line, pat=/^\s*#?\s*$/) ->
   ###
   Return 1 for ignorable line: iff `line` is blank or contains a single '#'.
-    
+
   Examples:
 
   >>> IS_LINE_JUNK('\n')
@@ -1098,7 +1098,7 @@ unifiedDiff = (a, b, {fromfile, tofile, fromfiledate, tofiledate, n, lineterm}={
   defaults to three.
 
   By default, the diff control lines (those with ---, +++, or @@) are
-  created with a trailing newline.  
+  created with a trailing newline.
 
   For inputs that do not have trailing newlines, set the lineterm
   argument to "" so that the output will be uniformly newline free.
@@ -1138,7 +1138,7 @@ unifiedDiff = (a, b, {fromfile, tofile, fromfiledate, tofiledate, n, lineterm}={
 
   lines = []
   started = false
-  for group in (new SequenceMatcher(null, a, b)).getGroupedOpcodes()
+  for group in (new SequenceMatcher(null, a, b)).getGroupedOpcodes(n)
     unless started
       started = true
       fromdate = if fromfiledate then "\t#{fromfiledate}" else ''
@@ -1229,7 +1229,7 @@ contextDiff = (a, b, {fromfile, tofile, fromfiledate, tofiledate, n, lineterm}={
     equal   : '  '
   started = false
   lines = []
-  for group in (new SequenceMatcher(null, a, b)).getGroupedOpcodes()
+  for group in (new SequenceMatcher(null, a, b)).getGroupedOpcodes(n)
     unless started
       started = true
       fromdate = if fromfiledate then "\t#{fromfiledate}" else ''
@@ -1269,7 +1269,7 @@ ndiff = (a, b, linejunk, charjunk=IS_CHARACTER_JUNK) ->
 
   - linejunk: A function that should accept a single string argument, and
     return true iff the string is junk.  The default is null, and is
-    recommended; 
+    recommended;
 
   - charjunk: A function that should accept a string of length 1. The
     default is module-level function IS_CHARACTER_JUNK, which filters out
